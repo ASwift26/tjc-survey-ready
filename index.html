@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Survey Ready: TJC Imaging Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f7f9; --card:#ffffff; --ink:#1d2433; --muted:#667085; --line:#e4e7ec;
+  --accent:#2f6fde; --accent-soft:#e8f0fd; --good:#1f9d61; --good-soft:#e5f6ee;
+  --warm:#d9822b; --warm-soft:#fdf1e4; --radius:16px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;font-size:16px;line-height:1.45}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+.wrap{max-width:560px;margin:0 auto;padding:20px 16px 40px;min-height:100vh;display:flex;flex-direction:column}
+header.top{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.back{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--card);border:1px solid var(--line)}
+.back svg{width:20px;height:20px}
+h1{font-size:26px;margin:4px 0 2px;letter-spacing:-.02em}
+h2{font-size:20px;margin:0;letter-spacing:-.01em}
+.sub{color:var(--muted);margin:0 0 18px}
+.cheer{background:var(--accent-soft);color:#1b4fa8;border-radius:var(--radius);padding:14px 16px;margin:6px 0 18px;font-weight:500}
+.label{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:18px 2px 8px}
+.list{display:flex;flex-direction:column;gap:10px}
+.cat{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px;text-align:left;width:100%}
+.cat:active{transform:scale(.99)}
+.ico{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:21px;background:var(--bg);flex:none}
+.cat .name{font-weight:600}
+.cat .meta{font-size:13px;color:var(--muted)}
+.cat .grow{flex:1;min-width:0}
+.bar{height:6px;background:var(--line);border-radius:6px;overflow:hidden;margin-top:6px}
+.bar>i{display:block;height:100%;background:var(--good);border-radius:6px;transition:width .4s}
+.cat.all{border-color:var(--accent);background:var(--accent-soft)}
+.modes{display:grid;gap:12px}
+.mode{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;text-align:left;display:flex;gap:14px;align-items:flex-start}
+.mode .ico{background:var(--accent-soft)}
+.mode b{display:block;font-size:17px;margin-bottom:2px}
+.mode span{color:var(--muted);font-size:14px}
+.progress-top{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--muted);margin:4px 0 14px}
+.progress-top .bar{flex:1;margin:0}
+.progress-top .bar>i{background:var(--accent)}
+/* flashcard */
+.stage{perspective:1200px;flex:1;display:flex;min-height:340px}
+.flip{position:relative;width:100%;flex:1;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.flip.on{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:24px 22px;display:flex;flex-direction:column;box-shadow:0 6px 24px rgba(16,24,40,.06);overflow:auto}
+.face.rear{transform:rotateY(180deg)}
+.face .tag{font-size:12px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.06em}
+.face .q{font-size:21px;font-weight:600;margin:auto 0;padding:16px 0;letter-spacing:-.01em}
+.face .a{font-size:17px;white-space:pre-line;margin:14px 0 auto;padding-bottom:8px}
+.face .hint{font-size:13px;color:var(--muted);text-align:center}
+.face.rear .tag{color:var(--good)}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.btn{border-radius:14px;padding:15px 12px;font-weight:600;text-align:center;border:1px solid var(--line);background:var(--card)}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn.good{background:var(--good);color:#fff;border-color:var(--good)}
+.btn.warm{background:var(--warm-soft);color:#9a5410;border-color:#f3d5b3}
+.btn.wide{grid-column:1/-1}
+.btn:disabled{opacity:.45}
+/* surveyor */
+.surveyor{display:flex;gap:12px;align-items:flex-start;margin:6px 0 14px}
+.avatar{width:48px;height:48px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:22px;flex:none}
+.bubble{background:var(--card);border:1px solid var(--line);border-radius:4px 18px 18px 18px;padding:16px 18px;font-size:19px;font-weight:600;box-shadow:0 6px 24px rgba(16,24,40,.05)}
+.bubble small{display:block;font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.think{background:var(--warm-soft);color:#7a4510;border-radius:14px;padding:12px 14px;font-size:14px;margin-bottom:12px;display:flex;gap:10px;align-items:center}
+.answer{background:var(--good-soft);border:1px solid #bfe6d1;border-radius:var(--radius);padding:16px 18px;white-space:pre-line;font-size:17px;animation:pop .35s ease}
+.answer b{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--good);margin-bottom:6px}
+.stats{display:flex;gap:10px;margin-bottom:14px}
+.stat{flex:1;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center}
+.stat b{display:block;font-size:20px}
+.stat span{font-size:12px;color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:12px 18px;border-radius:999px;font-weight:600;font-size:15px;opacity:0;transition:.3s;pointer-events:none;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* done */
+.done{text-align:center;margin:auto 0;padding:20px 0}
+.done .big{font-size:64px;line-height:1}
+.done h2{font-size:24px;margin:12px 0 6px}
+.done p{color:var(--muted);margin:0 0 22px}
+.ring{width:150px;height:150px;margin:0 auto 10px}
+.foot{margin-top:auto;padding-top:28px;text-align:center;font-size:12px;color:var(--muted)}
+.link{color:var(--accent);font-weight:600;font-size:14px;padding:8px}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.flip,.answer,.toast{transition:none;animation:none}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<div class="toast" id="toast"></div>
+<script>
+const QUESTIONS = [{"id": 0, "topic": "Acronyms", "q": "What does SKATE stand for?", "sv": null, "a": "• Safety of life\n• Keep fire from spreading (close doors)\n• Activate alarm\n• Telephone x35511\n• Extinguish or evacuate", "roles": ["all"]}, {"id": 1, "topic": "Acronyms", "q": "What does SBAR stand for?", "sv": null, "a": "Situation, Background, Assessment, Recommendation.\nUsed to communicate important patient information from one caregiver to another, e.g., during handoffs.", "roles": ["all"]}, {"id": 2, "topic": "Acronyms", "q": "What does PDSA stand for?", "sv": null, "a": "Plan, Do, Study, Act — our process improvement model.", "roles": ["all"]}, {"id": 3, "topic": "Acronyms", "q": "What does SAE stand for?", "sv": null, "a": "Significant Adverse Event.", "roles": ["all"]}, {"id": 4, "topic": "Acronyms", "q": "What does RCA stand for?", "sv": null, "a": "Root Cause Analysis.", "roles": ["all"]}, {"id": 5, "topic": "Acronyms", "q": "What does AIDET stand for?", "sv": null, "a": "A patient communication method:\n• Acknowledge: greet the patient, make eye contact\n• Introduce: your name and role\n• Duration: give an accurate time expectation\n• Explanation: explain the procedure step by step\n• Thank you: thank the patient for choosing our hospital, their communication and cooperation", "roles": ["all"]}, {"id": 6, "topic": "Acronyms", "q": "What does PASS stand for?", "sv": null, "a": "How to use a fire extinguisher:\n• Pull the pin\n• Aim at the base of the fire\n• Squeeze the handle\n• Sweep across the fire", "roles": ["all"]}, {"id": 7, "topic": "Acronyms", "q": "What does PPM stand for?", "sv": null, "a": "Policy and Procedure Manager.", "roles": ["all"]}, {"id": 8, "topic": "Acronyms", "q": "What does SDS stand for?", "sv": null, "a": "Safety Data Sheets.", "roles": ["all"]}, {"id": 9, "topic": "Acronyms", "q": "What does CPR stand for?", "sv": null, "a": "Cardiopulmonary resuscitation.", "roles": ["all"]}, {"id": 10, "topic": "Acronyms", "q": "What does BLS stand for?", "sv": null, "a": "Basic Life Support.", "roles": ["all"]}, {"id": 11, "topic": "Acronyms", "q": "What does TJC stand for?", "sv": null, "a": "The Joint Commission.", "roles": ["all"]}, {"id": 12, "topic": "Acronyms", "q": "What does OLAR stand for?", "sv": null, "a": "The Office of Licensure, Accreditation and Regulation.", "roles": ["all"]}, {"id": 13, "topic": "Acronyms", "q": "What does OSHA stand for?", "sv": null, "a": "The Occupational Safety and Health Administration.", "roles": ["all"]}, {"id": 14, "topic": "Communication & Documentation", "q": "What is the process for telephone/verbal communication with medical personnel about a patient?", "sv": "You receive a call from a nursing unit, walk me through what you do before you share anything.", "a": "Verify the patient name and date of birth. Record the information of the inquiry and read it back to the caller.", "roles": ["Technologist", "Nurse/NP", "Support Staff"]}, {"id": 15, "topic": "Communication & Documentation", "q": "What is the process of clarifying a telephone/verbal order?", "sv": "A physician calls in a verbal order. What do you do, step by step?", "a": "Record the order, including the physician name, date, and time. Then read back the order to obtain confirmation from the physician.", "roles": ["Technologist", "Nurse/NP"]}, {"id": 16, "topic": "Communication & Documentation", "q": "What is your role in escalating a critical result or finding?", "sv": "You spot a critical finding on a patient you just scanned. What's your part in getting that to the right person?", "a": "Contact the attending imaging physician to report the finding. The imaging physician will contact the responsible healthcare provider. Contact the on-call physician as back up.", "roles": ["Technologist", "Nurse/NP"]}, {"id": 17, "topic": "Communication & Documentation", "q": "What is the purpose of an SBAR? How is information communicated during handoffs or shift changes?", "sv": "Walk me through your handoff when you take over a patient from another caregiver. What do you cover?", "a": "SBAR communicates important information from one caregiver to another.\n• Situation: what is the patient having?\n• Background: where is the patient coming from (Inpatient, Outpatient, ED, etc.)?\n• Assessment: patient status (comfortable, uneasy, fall risk, etc.)\n• Recommendation: next steps, additional assistance (warm blanket, pillow under leg, extra supervision)", "roles": ["Technologist", "Nurse/NP"]}, {"id": 63, "topic": "Communication & Documentation", "q": "Who is qualified to translate study information to patients?", "sv": "A patient's family member speaks Spanish and offers to translate the exam instructions. Is that OK?", "a": "Only a certified interpreter.", "roles": ["all"]}, {"id": 64, "topic": "Communication & Documentation", "q": "What resources are available in Imaging to support non-English-speaking patients?", "sv": "Your next patient doesn't speak English. What resources do you have here to help?", "a": "Multi-lingual instructions on the scanner, MARTTI audio/visual, Interpreter Services at x35353.", "roles": ["all"]}, {"id": 19, "topic": "Disaster & Emergency Management", "q": "How often does Fire Safety Training occur for each employee?", "sv": "When was your last fire safety training, and how often do you have to take it?", "a": "Every 4 years.", "roles": ["all"]}, {"id": 20, "topic": "Disaster & Emergency Management", "q": "Where would you find the Emergency Management & Business Continuity Plan (AKA Disaster Manual)? Tell me one item in the manual.", "sv": "Show me where your department keeps its disaster plan. Tell me one thing that's in it.", "a": "Items include: Fire Plan, details about codes, Evacuation Procedure, CS Link downtime, Department Plan.", "roles": ["all"]}, {"id": 21, "topic": "Disaster & Emergency Management", "q": "What is Everbridge used for?", "sv": "During an emergency, how would you get updates from the hospital? What's that system called?", "a": "Everbridge is our emergency alert system, where we receive time-sensitive information during an emergency.", "roles": ["all"]}, {"id": 22, "topic": "Disaster & Emergency Management", "q": "Where is Imaging's Command Center?", "sv": "Imaging activates its command center during a disaster. Where is it, and how would you reach it?", "a": "CT Core — phone (310) 423-2723 or simply x32723.", "roles": ["all"]}, {"id": 23, "topic": "Disaster & Emergency Management", "q": "What Incident Command System is used at CSMC?", "sv": "During a major emergency, what incident command structure does the hospital use, and why does it matter?", "a": "HICS — Hospital Incident Command System. It promotes smooth coordination between Los Angeles emergency services and CSMC.", "roles": ["all"]}, {"id": 24, "topic": "Disaster & Emergency Management", "q": "If it is necessary to evacuate your work area, where would you go to meet up with your team?", "sv": "We have to evacuate this area right now. Where does your team meet up?", "a": "• AHSP: South Tower Plaza\n• 8th Floor IR: Corner of Gracie Allen and San Vicente\n• MOT: Corner of 3rd and Sherbourne\n• 310: Parking lot of 310 building\n• MGB: Corner of Colgate and San Vicente\n• Taper: Corner of Gracie Allen and San Vicente", "roles": ["all"]}, {"id": 25, "topic": "Disaster & Emergency Management", "q": "How would you respond to a fire or other emergency?", "sv": "You smell smoke coming from the room next door. What do you do first? Walk me through it.", "a": "SKATE — info is on the back of your badge and on the quality corner board.", "roles": ["all"]}, {"id": 26, "topic": "Disaster & Emergency Management", "q": "Where are the nearest fire extinguishers and emergency exits in your work area?", "sv": "Point me to the nearest fire extinguisher and emergency exit from where we're standing.", "a": "Answer is department dependent — know yours before the surveyor asks!", "roles": ["all"]}, {"id": 27, "topic": "Disaster & Emergency Management", "q": "Explain how you know that a fire extinguisher is not expired.", "sv": "I'm looking at this fire extinguisher. How do you know it's ready to use?", "a": "Read the punches on the tag with the inspection date (month and date). They are checked annually. The punch date is the date the inspection occurred.", "roles": ["all"]}, {"id": 28, "topic": "Disaster & Emergency Management", "q": "The fire extinguishers in MRI are colored white and are carbon dioxide. What does this indicate?", "sv": "I notice the fire extinguisher by the MRI scanner is white. Why is it different from the red ones in the hall?", "a": "The fire extinguisher is non-magnetic and can be used safely in the MRI scanner room.", "roles": ["all"]}, {"id": 120, "topic": "Disaster & Emergency Management", "q": "What is a Code Blue, and what number do you call?", "sv": "Your patient suddenly stops breathing. What code is that, and what number do you call?", "a": "Life-threatening situation.\n• Medical Center: x121\n• Satellites: 911", "roles": ["all"]}, {"id": 121, "topic": "Disaster & Emergency Management", "q": "What is a Code Yellow, and what number do you call?", "sv": "A visitor trips in the hallway but is awake and talking. What code do you call, and what number?", "a": "Person down; minor injury.\n• Call x121", "roles": ["all"]}, {"id": 122, "topic": "Disaster & Emergency Management", "q": "What is a Code Red, and what number do you call?", "sv": "You see smoke coming out of a supply room. What code is that, and who do you call?", "a": "Fire.\n• Medical Center: x35511\n• Satellites: 911", "roles": ["all"]}, {"id": 123, "topic": "Disaster & Emergency Management", "q": "What is a Code Green?", "sv": "You hear Code Green announced overhead. What's happening?", "a": "Fire drill.", "roles": ["all"]}, {"id": 124, "topic": "Disaster & Emergency Management", "q": "What is a Code Grey, and what number do you call?", "sv": "Someone is wandering in a staff-only area and won't say why they're there. What code do you call?", "a": "Suspicious person or security issue.\n• Call x35511", "roles": ["all"]}, {"id": 125, "topic": "Disaster & Emergency Management", "q": "What is a Code Silver, and what do you do?", "sv": "You hear Code Silver announced. What does it mean, and what do you do?", "a": "Attacker with a lethal weapon.\n• Call x35511\n• Run, Hide, Fight", "roles": ["all"]}, {"id": 126, "topic": "Disaster & Emergency Management", "q": "What is a Code Pink, and what number do you call?", "sv": "A parent tells you their child is missing from the waiting room. What code is that?", "a": "Infant or child abduction.\n• Call x35511", "roles": ["all"]}, {"id": 127, "topic": "Disaster & Emergency Management", "q": "What is a Code Orange, and what number do you call?", "sv": "You notice a strange chemical smell spreading through the department. What code would be called?", "a": "Housewide response / odor.\n• Call x35511", "roles": ["all"]}, {"id": 29, "topic": "Environment of Care", "q": "What is your role when an Exit Sign or door lock is broken? Hole in the wall?", "sv": "You notice this exit sign is out or that there's a hole in the wall over there. What do you do?", "a": "Call Hospitality at x34444.", "roles": ["all"]}, {"id": 30, "topic": "Environment of Care", "q": "What is safe gas/oxygen cylinder storage?", "sv": "I see oxygen cylinders in this room. Tell me how they should be stored.", "a": "• Empty and full cylinders stored in 2 separate areas\n• No more than 12 cylinders per room\n• Cylinders are not stored next to combustibles (boxes)", "roles": ["all"]}, {"id": 31, "topic": "Environment of Care", "q": "How close can you store supplies to the ceiling or sprinkler head?", "sv": "Take a look at this supply shelf. Is anything stored too close to the ceiling or sprinkler? How close is too close?", "a": "No closer than 18 inches.", "roles": ["all"]}, {"id": 32, "topic": "Environment of Care", "q": "Where would you find Safety Data Sheets — SDS (formerly MSDS)?", "sv": "Where are the Safety Data Sheets for the chemicals you use here, and how would you pull one up right now?", "a": "My Portal. The platform is called SchiShield.", "roles": ["all"]}, {"id": 33, "topic": "Environment of Care", "q": "What would you do in the event of a spill?", "sv": "Say a container just spilled right here in the hallway. What do you do? Does it change if it's hazardous or radioactive?", "a": "• Water: Isolate the spill. Deny access to others to avoid a fall. Contact Hospitality for clean up.\n• Hazardous/Radioactive material: Isolate the spill. Deny access to avoid spread. Contact the Safety Office.", "roles": ["all"]}, {"id": 34, "topic": "Environment of Care", "q": "What should an employee do if you are injured at work?", "sv": "If you hurt your back moving a patient today, what would you do, and how soon?", "a": "Report to your manager and complete an employee accident report in CS Safe within 24 hours.", "roles": ["all"]}, {"id": 62, "topic": "Environment of Care", "q": "Fall Prevention: What can I do to minimize my own risk of falling?", "sv": "What do you do to keep yourself from slipping or falling at work?", "a": "Keep walkways clear, wear supportive shoes, take your time when walking, use handrails, and call x34444 to report spills, clutter, tripping hazards, or other unsafe conditions.", "roles": ["all"]}, {"id": 35, "topic": "HIPAA", "q": "How do you ensure patient privacy and confidentiality?", "sv": "How do you protect patient information in this area? Show me what you do when you step away from your computer.", "a": "Protect PHI by logging off CS Link after each use. Do not discuss patient care in public places. Properly dispose of patient health information (PHI).", "roles": ["all"]}, {"id": 36, "topic": "HIPAA", "q": "What kind of waste goes into HIPAA blue bins?", "sv": "What goes in this blue bin? Give me a few examples.", "a": "Patient control sheets, labels with patient information, patient ID bands, orders with patient info, fax messages, test results, MRN info, patient face photos, and social security numbers.", "roles": ["all"]}, {"id": 37, "topic": "HIPAA", "q": "Where do you look up your own medical information?", "sv": "If you wanted to check your own lab results, where would you go? Could you look them up in the chart?", "a": "My CS-Link.", "roles": ["all"]}, {"id": 38, "topic": "Infection Control", "q": "What is something you do to prevent hospital-acquired infections?", "sv": "What do you personally do every day to keep patients from picking up an infection here?", "a": "• Clean hands before and after patient care and after touching contaminated surfaces\n• Properly clean and disinfect equipment\n• Properly use PPE", "roles": ["all"]}, {"id": 39, "topic": "Infection Control", "q": "What do OSHA and TJC require about food and drinks in patient care areas?", "sv": "I see a coffee cup at that workstation. Is that allowed here? Why or why not?", "a": "To remove the risk of exposure to infectious material, no food or drink is allowed in clinical areas.", "roles": ["all"]}, {"id": 40, "topic": "Infection Control", "q": "When do you practice hand hygiene?", "sv": "Walk me through a typical patient. At what moments do you clean your hands?", "a": "Before and after patient contact, before and after eating/drinking, after a restroom break, after sneezing/coughing, after picking up or touching contaminated equipment, and when hands are visibly soiled.", "roles": ["all"]}, {"id": 41, "topic": "Infection Control", "q": "Name at least 2 categories of Isolation.", "sv": "I see an isolation sign on that door. What types of isolation might you see here?", "a": "Airborne, Droplet, Contact, Contact Plus, Standard.", "roles": ["Technologist"]}, {"id": 42, "topic": "Infection Control", "q": "How do you know what PPE to use for the various isolation categories?", "sv": "Your next patient is on isolation. How do you figure out what PPE to wear?", "a": "Use the matrix on the quality corner board or call Epidemiology", "roles": ["Technologist", "Nurse/NP", "Imaging Assistant", "Clinical Partner"]}, {"id": 43, "topic": "Infection Control", "q": "Describe the Green is Clean process.", "sv": "This piece of equipment has a green tag on it. What does it mean, and can I use it?", "a": "Once the item has been cleaned, the green tag is dated, initialed, and applied to the equipment. Before using the equipment, remove the Green is Clean tag. The equipment should be recleaned at 60 days from the date on the tag or when the equipment becomes visually dirty, such as dust.", "roles": ["Technologist", "Nurse/NP", "Imaging Assistant", "Clinical Partner"]}, {"id": 44, "topic": "Infection Control", "q": "How do you practice hand hygiene?", "sv": "Show me how you clean your hands. How long do you rub or wash?", "a": "• Alcohol-based hand rub: quarter-size amount, rub hands together for 15 seconds\n• Or wash hands with warm soapy water for 15 seconds, then dry thoroughly", "roles": ["all"]}, {"id": 45, "topic": "Infection Control", "q": "What disinfection product do you use to clean your area, and what is the wet/dwell time?", "sv": "Show me what you use to wipe down your equipment. How long does the surface need to stay wet?", "a": "• Sani-Cloth: 2 minutes", "roles": ["Technologist", "Nurse/NP", "Imaging Assistant", "Clinical Partner"]}, {"id": 46, "topic": "Medication Safety", "q": "What is medication reconciliation?", "sv": "How does the team make sure a patient's medication list is accurate? What's that process called?", "a": "The process of maintaining an accurate list of medications in order to aid in the evaluation and treatment of the patient is medication reconciliation", "roles": ["Technologist", "Nurse/NP"]}, {"id": 47, "topic": "Medication Safety", "q": "How do you know that a refrigerator is safe to use?", "sv": "How do you know this medication/food refrigerator is at the right temperature? What happens if it isn't?", "a": "Medication/food refrigerator temperatures are on a continuous monitoring system called Cetani. When temperatures fall out of range, the Facilities department is alerted and will respond.", "roles": ["Technologist", "Nurse/NP", "Imaging Assistant", "Clinical Partner"]}, {"id": 48, "topic": "Medication Safety", "q": "How are medications kept secure and who can access them?", "sv": "Where are medications stored in this area? Who is allowed to get into them?", "a": "Medications are stored in secure areas and must stay locked at all times. They are accessed and attended to by licensed staff.", "roles": ["Technologist", "Nurse/NP"]}, {"id": 49, "topic": "Medication Safety", "q": "What is your process for medication administration and verification?", "sv": "Walk me through what you check right before you give a patient a medication.", "a": "Ensure the right patient, right medication, right dose, right time, right route.", "roles": ["Technologist", "Nurse/NP"]}, {"id": 50, "topic": "Medication Safety", "q": "Where do you find information about patient allergies?", "sv": "Show me where you'd find this patient's allergies in CS Link.", "a": "On the Tech Worklist", "roles": ["Technologist", "Nurse/NP"]}, {"id": 51, "topic": "Nursing Care", "q": "What is the purpose of the daily pharmacy report of controlled substances?", "sv": "What do you do with the daily pharmacy report on controlled substances?", "a": "To review and reconcile any discrepancies.", "roles": ["Nurse/NP"]}, {"id": 111, "topic": "Nursing Care", "q": "Nurses: How do you address patients with restraints according to policy?", "sv": "Your patient comes to IR in restraints. What does policy require while they're with you?", "a": "In Imaging, we take SBAR from the primary nurse and document the SBAR in progress notes. Policy states we check and document every 2 hours on the flow sheet. A new physician order is required daily.", "roles": ["Nurse/NP"]}, {"id": 112, "topic": "Nursing Care", "q": "How do you address pain management for patients?", "sv": "Your patient tells you they're in pain. Walk me through what you do and what you document.", "a": "Perform a pain assessment and review the chart for available pain medications. RNs can administer pain meds for inpatients and for outpatients having procedures. Administration is documented on the eMAR. A reassessment within 60 minutes after administration is required and documented on the flow sheet.", "roles": ["Nurse/NP"]}, {"id": 52, "topic": "Organization", "q": "What is the chain of command from CEO to your Team Leader?", "sv": "Tell me who you report to, all the way up to the CEO.", "a": "• Imaging: Peter Slavin MD (CEO), Clare Lee (VP), Greg Adamczak (Executive Director), Associate Director, Manager, Team Leader", "roles": ["all"]}, {"id": 53, "topic": "Organization", "q": "Describe the onboarding process you went through when you were hired.", "sv": "Tell me about your orientation when you started here. What training did you get?", "a": "I attended the 2-day general hospital orientation program and Imaging orientation.", "roles": ["all"]}, {"id": 54, "topic": "Organization", "q": "Where do you find imaging policies?", "sv": "If you had a question about an imaging policy, show me how you'd find it.", "a": "On the Cedars Intranet on Patient Care web page, Policy and Procedure Manager (PPM)", "roles": ["all"]}, {"id": 55, "topic": "Organization", "q": "Where do you find information on Medical Staff privileges?", "sv": "Where would you look up information about a physician on the medical staff?", "a": "On the Cedars Intranet on Patient Care web page, \"Privilege Look Up\"", "roles": ["all"]}, {"id": 56, "topic": "Organization", "q": "What are the four components of the Medical Center's Mission Statement?", "sv": "What's the hospital's mission? Can you name the four parts?", "a": "Quality Patient Care, Education & Training, Community Service, and Research.", "roles": ["all"]}, {"id": 57, "topic": "Organization", "q": "How does your role contribute to the overall mission of the medical center?", "sv": "How does what you do every day connect to the hospital's mission?", "a": "Sample answers:\n• My role in Quality Patient Care in Imaging is to ensure I am performing the exam the referring physician ordered, by reviewing the order and indication.\n• My role is to ensure I am communicating the correct info to the correct patient by verifying patient identification with 2 identifiers.", "roles": ["all"]}, {"id": 58, "topic": "Organization", "q": "What qualifies you to perform your job?", "sv": "What makes you qualified to do your job? How do you keep your skills current?", "a": "State licenses, CEUs, job competencies, department and hospital training.", "roles": ["all"]}, {"id": 60, "topic": "Patient Safety", "q": "Fall Prevention: How do I know the fall risk of a patient?", "sv": "How would you know if this patient is a fall risk? Show me where you'd look.", "a": "There are yellow fall indicators in Radiant/CS Link.", "roles": ["all"]}, {"id": 61, "topic": "Patient Safety", "q": "Fall Prevention: When you see the fall risk indicator in CS Link/Radiant, what can you do to reduce the risk of falls?", "sv": "Your next patient has a fall risk flag. What do you do differently?", "a": "• Outpatient: Take a wheelchair to the waiting area when picking up patients for their exams\n• Inpatient: Instruct patients to wait for assistance before standing, moving to/from the imaging table, gurney, wheelchair, and in/out of the restroom\n• Use Safe Patient Handling & Mobility (SPHM) tools and equipment", "roles": ["Technologist", "Nurse/NP", "Imaging Assistant", "Clinical Partner"]}, {"id": 65, "topic": "Patient Safety", "q": "What is your process for calling a Code Blue?", "sv": "Your patient becomes unresponsive on the table. What do you do, and what number do you call?", "a": "• Medical Center: Call x121 and provide the location of the code\n• Satellites: Call 911 and provide the address of the building", "roles": ["Technologist", "Nurse/NP", "Imaging Assistant", "Clinical Partner"]}, {"id": 66, "topic": "Patient Safety", "q": "When you and a patient do not speak the same language, how do you communicate and where do you document?", "sv": "You and your patient don't speak the same language. How do you communicate, and where do you document it?", "a": "Contact Interpreter Services to schedule an interpreter or use MARTTI. Document the name of the interpreter, or the patient's declination of an interpreter, in CS Link.", "roles": ["all"]}, {"id": 67, "topic": "Patient Safety", "q": "What is included in Annual Health and Safety training?", "sv": "What topics are covered in your annual health and safety training?", "a": "Body Mechanics/Ergonomics, Electrical Safety, Fire Safety, Emergency Management, Hazardous Materials & Waste, Infection Control, Patient Safety, Performance Improvement, and Security.", "roles": ["all"]}, {"id": 68, "topic": "Patient Safety", "q": "Name at least 3 events that should be entered in CS Safe.", "sv": "Tell me about the kinds of events you'd enter in CS Safe. Have you ever entered one?", "a": "Needle sticks, contrast/medication reactions, delay of care, safety/security events, employee injuries, wrong procedure, codes, extravasations, Safety Star, employee incidents", "roles": ["all"]}, {"id": 69, "topic": "Patient Safety", "q": "If you notice a patient looking unsteady, what can you do?", "sv": "You're walking a patient back and they start to look wobbly. What do you do?", "a": "Offer the patient a wheelchair or an arm for support.", "roles": ["all"]}, {"id": 70, "topic": "Patient Safety", "q": "How do you report patient safety concerns or adverse events?", "sv": "You see something that could hurt a patient. How do you report it, and to whom?", "a": "In CS Safe. Also report to the leadership team.", "roles": ["all"]}, {"id": 71, "topic": "Patient Safety", "q": "What is your role in a Code Blue/Rapid Response situation?", "sv": "A code is called in your area. What's your job in that moment?", "a": "• Nurse, Clinical Partner, Technologist, Tech Assistant: I am the first line of care. I am trained to perform CPR. I SBAR the emergency response team and offer support to the care team.\n• Patient support: I assist by guiding the care team to the appropriate location.", "roles": ["all"]}, {"id": 72, "topic": "Patient Safety", "q": "How do you identify patients before providing care or treatment?", "sv": "Show me how you identify a patient before you start their exam.", "a": "Two patient identifiers: Name and DOB.", "roles": ["all"]}, {"id": 73, "topic": "Patient Safety", "q": "A colleague picks up your next patient. What can you do to ensure you have the right patient and the patient receives the correct exam?", "sv": "A coworker brings back your next patient for you. How do you make sure it's the right patient getting the right exam?", "a": "• Do a thorough hand-off so both team members agree on the patient name and exam\n• As the scanning technologist, review the order and protocol details in Radiant\n• Personally check the patient's ID band and match it with the control sheet or patient label\n• After verifying, select or enter patient information on the scanner", "roles": ["Technologist", "Nurse/NP", "Imaging Assistant", "Clinical Partner"]}, {"id": 93, "topic": "Patient Safety", "q": "What steps do you take when a patient's condition deteriorates?", "sv": "Your patient suddenly gets worse during the exam. What do you do?", "a": "Call Rapid Response at x121.", "roles": ["Technologist", "Nurse/NP", "Imaging Assistant", "Clinical Partner"]}, {"id": 97, "topic": "Patient Safety", "q": "What is your protocol for asking about and documenting pregnancy?", "sv": "Your next patient is a 30-year-old woman. Walk me through how you ask about pregnancy and where you document it.", "a": "We ask females ages 12–55, before performing an exam, and document in CS Link.", "roles": ["Technologist", "Nurse/NP"]}, {"id": 104, "topic": "Patient Safety", "q": "What is the process for addressing a contrast reaction?", "sv": "Your patient starts to have a contrast reaction. Walk me through everything that happens next.", "a": "• Activate emergency response if necessary\n• Call the Radiologist and Imaging RN to assess the patient\n• Complete the contrast reaction paper form\n• Enter a CS Safe\n• Call the patient the next day to follow up", "roles": ["Technologist", "Nurse/NP"]}, {"id": 105, "topic": "Patient Safety", "q": "What is the process for addressing a contrast infiltration?", "sv": "You notice the contrast infiltrated at the IV site. What do you do?", "a": "• Call the Radiologist and Imaging RN to assess the patient\n• Patient taken to PACU for monitoring\n• Complete the infiltration form\n• Enter a CS Safe\n• Call the patient the next day to follow up", "roles": ["Technologist", "Nurse/NP"]}, {"id": 74, "topic": "Procedures", "q": "Why do we use the Universal Protocol (Time Out)?", "sv": "Before a procedure starts, why does everyone stop for a Time Out?", "a": "To ensure we have the right patient, the right procedure, and the right side for the procedure being conducted.", "roles": ["Technologist", "Nurse/NP", "Imaging Assistant", "Clinical Partner"]}, {"id": 75, "topic": "Procedures", "q": "Who performs pre-procedure checklists and where is it documented?", "sv": "Who completes the pre-procedure checklist, and where is it documented?", "a": "RNs and/or Technologists. It is documented in Radiant.", "roles": ["Technologist", "Nurse/NP"]}, {"id": 76, "topic": "Procedures", "q": "Who is involved in the Time Out and how is it performed?", "sv": "Walk me through a Time Out in your procedure room. Who's involved, and what happens?", "a": "All personnel present in the procedure room. Everyone stops and turns their attention to the Time Out leader, and there is agreement about the patient, procedure, side, and site.", "roles": ["Technologist", "Nurse/NP", "Imaging Assistant", "Clinical Partner"]}, {"id": 77, "topic": "Procedures", "q": "What should happen during a Time Out?", "sv": "The Time Out starts while you're setting up supplies. What should you do?", "a": "Everyone stops and directs their attention to the Time Out leader.", "roles": ["Technologist", "Nurse/NP", "Imaging Assistant", "Clinical Partner"]}, {"id": 78, "topic": "Procedures", "q": "A Sign Out policy was recently implemented in Imaging. What is a Sign Out and how is it performed?", "sv": "I hear Imaging recently started doing a Sign Out. What is it, and who leads it?", "a": "Sign Out is led by the proceduralist. The final image is reviewed for accountability of supplies.", "roles": ["Technologist", "Nurse/NP"]}, {"id": 79, "topic": "Procedures", "q": "Who is allowed to conduct informed consent?", "sv": "The patient is about to sign the consent form. Who is allowed to explain the procedure and get consent?", "a": "A physician or other licensed independent practitioner (LIP), who informs the patient or a surrogate decision maker about proposed treatments, potential benefits, risks, and alternatives.", "roles": ["Technologist", "Nurse/NP"]}, {"id": 80, "topic": "Procedures", "q": "What is the role of nurses and technologists in informed consent?", "sv": "What's your part when a patient signs an informed consent form?", "a": "To ensure the physician or LIP discussed the procedure with the patient, and to sign as witness.", "roles": ["Technologist", "Nurse/NP"]}, {"id": 81, "topic": "Process Improvement", "q": "What Performance Improvement (PI) model is used at CSMC?", "sv": "When your department works on fixing a problem, what improvement model do you use?", "a": "PDSA — Plan, Do, Study, Act. Make a plan to address a problem. Do a test of change. Study the results. Act upon the results.", "roles": ["all"]}, {"id": 82, "topic": "Process Improvement", "q": "What can you tell me about your Quality Improvement project? (What is it? What is the progress? Where is it?)", "sv": "Tell me about a quality improvement project your department is working on. Where would I see it?", "a": "Find it on the Quality Corner board.", "roles": ["all"]}, {"id": 83, "topic": "Process Improvement", "q": "What is your involvement with quality improvement initiatives in your department?", "sv": "How have you been involved in improving how things work in your department?", "a": "• I help identify problems or inefficiencies in our workflows\n• I give feedback and suggestions to improve department processes\n• I follow the changes implemented to improve patient care and report important information to leadership\n• I help train or inform others once a new process is introduced", "roles": ["all"]}, {"id": 84, "topic": "Process Improvement", "q": "What is the purpose of a Root Cause Analysis?", "sv": "When something goes wrong, the hospital sometimes does a Root Cause Analysis. What's the purpose?", "a": "To find out what happened, why it happened, and determine what parts of the process can be changed.", "roles": ["all"]}, {"id": 85, "topic": "Process Improvement", "q": "How are patient complaints addressed on your unit?", "sv": "A patient complains to you about their wait time. What happens next?", "a": "Patient complaints are escalated to leadership. Leadership will follow up and share any work-related information.", "roles": ["all"]}, {"id": 59, "topic": "Radiation Safety", "q": "Radiation Safety: We work in Radiology. How do you ensure you are staying within the annual radiation exposure limit?", "sv": "You work around radiation. How do you know you're staying under your annual exposure limit?", "a": "Wear dosimeters (radiation exposure badges), which are monitored by the Safety Office. Safety Office: x34336.", "roles": ["Technologist", "Nurse/NP", "Imaging Assistant", "Clinical Partner"]}, {"id": 100, "topic": "Radiation Safety", "q": "X-ray / IR / CT / NM: What is the appropriate way to maintain lead aprons and how often are they checked?", "sv": "Show me where you keep the lead aprons. How should they be stored, and when were they last checked?", "a": "Hang lead aprons on hangers or keep them flat so there are no bends or creases. Aprons are checked annually and documented in OneDrive.", "roles": ["Technologist", "Nurse/NP", "Imaging Assistant", "Clinical Partner"]}, {"id": 110, "topic": "Radiation Safety", "q": "IR: What is the radiation over-exposure threshold in IR?", "sv": "At what point is a patient's radiation dose in IR considered an over-exposure?", "a": "≥ 5,000 mGy, OR ≥ 90 minutes AND 1,800 mGy.", "roles": ["Technologist", "Nurse/NP"]}, {"id": 92, "topic": "Modality Specific", "q": "Where do you find information on your imaging/area protocols?", "sv": "Show me where you find the protocol for the exam you're about to do.", "a": "Technologists: OneDrive.", "roles": ["Technologist"]}, {"id": 95, "topic": "Modality Specific", "q": "How do you ensure your scanners are operating correctly?", "sv": "How do you know this scanner is working correctly today? Show me where the QC records are.", "a": "We perform daily, weekly, and monthly quality control. The results are kept in OneDrive.", "roles": ["Technologist"]}, {"id": 102, "topic": "Modality Specific", "q": "NM — Gastric Emptying: How do you know the eggs are cooked thoroughly?", "sv": "You're preparing eggs for a gastric emptying study. How do you know they're cooked enough?", "a": "Use a thermometer to ensure 160 degrees is reached.", "roles": ["Technologist"]}, {"id": 103, "topic": "Modality Specific", "q": "NM — Labeled blood cells: How do you ensure you are reinjecting the correct patient?", "sv": "Walk me through a labeled blood cell study. How do you make sure the blood goes back into the right patient?", "a": "• When drawing blood, the patient receives a red wristband with a unique number\n• The same number labels the syringe and is used through the labeling process\n• The final syringe is labeled with the same number\n• Before reinjection, the patient is properly identified and the wristband number is matched to the syringe\n• All of this is documented in CS Link under Universal Protocol in the Tech Navigator", "roles": ["Technologist"]}, {"id": 106, "topic": "Modality Specific", "q": "MRI: How do you ensure that non-MRI-safe wheelchairs, walkers, or canes do not enter Zone 3 or 4?", "sv": "A patient arrives for MRI in their own wheelchair. How do you keep it out of Zone 3 and 4?", "a": "• Taper Lower Level/MGB: Wheelchairs, walkers, and canes do not leave the lobby\n• AHSP: Wheelchairs, walkers, and canes do not leave the dressing room", "roles": ["Technologist", "Imaging Assistant", "Clinical Partner", "Support Staff"]}, {"id": 107, "topic": "Modality Specific", "q": "MRI: What is your screening process for patients and family members?", "sv": "Walk me through how you screen a patient and their family member before they go into the MRI room.", "a": "Patients/family members complete a screening form. The technologist reviews the form with them. They are then screened with a metal detector.", "roles": ["Technologist", "Imaging Assistant"]}, {"id": 109, "topic": "Modality Specific", "q": "IR: How often are checks performed for temperature and humidity compliance?", "sv": "How often do you check temperature and humidity in the IR suite, and who does it?", "a": "Daily, by the nursing staff.", "roles": ["Nurse/NP"]}, {"id": 114, "topic": "Waste Management", "q": "At what level is a sharps container considered full, and what is the appropriate way to dispose of it?", "sv": "Look at this sharps container. When is it considered full, and what do you do then?", "a": "Discard when 3/4 full. Make sure the top is clicked closed and call Hospitality at x34444 to arrange pick up.", "roles": ["Technologist", "Nurse/NP", "Imaging Assistant", "Clinical Partner"]}, {"id": 115, "topic": "Waste Management", "q": "NM: What do you write on the closed sharps container?", "sv": "NM: You just closed this sharps container. What do you write on it?", "a": "Date, initials, room location.", "roles": ["Technologist"]}, {"id": 116, "topic": "Waste Management", "q": "Sharps and pharmaceutical bins have been combined into one CoMingle blue waste bin. What goes in them?", "sv": "What goes into this blue CoMingle bin?", "a": "Pharmacy waste, needles, syringes, blades, guide wires.", "roles": ["Technologist", "Nurse/NP", "Imaging Assistant", "Clinical Partner"]}, {"id": 117, "topic": "Waste Management", "q": "When handling medical waste, what PPE should be used?", "sv": "You need to empty a medical waste container. What PPE do you put on?", "a": "At the very minimum, gloves — plus the appropriate level of PPE for the type of medical waste being handled.", "roles": ["Technologist", "Nurse/NP", "Imaging Assistant", "Clinical Partner"]}, {"id": 118, "topic": "Waste Management", "q": "Why are brown corrugated cardboard boxes not suitable in clinical areas?", "sv": "I see a cardboard shipping box in this clinical room. Is that a problem? Why?", "a": "They are porous and harbor vermin, bacteria, dust, and moisture. They are also highly flammable.", "roles": ["all"]}, {"id": 119, "topic": "Waste Management", "q": "Tell me about the different types of waste you manage in your work area.", "sv": "Walk me through the different kinds of waste you deal with in this area and where each one goes.", "a": "Potential answers: paper waste, batteries, patient sensitive (PHI), biohazard, radiation, medication, sharps. Note: TJC requires segregation of different types of waste.", "roles": ["all"]}];
+const ICONS = {
+ "Nursing Care":"🩺","Radiation Safety":"☢️","Modality Specific":"🧲",
+ "Acronyms":"🔤","Communication & Documentation":"💬","Disaster & Emergency Management":"🚨","Environment of Care":"🏥","HIPAA":"🔒",
+ "Infection Control":"🧼","Medication Safety":"💊","Organization":"🏛️","Patient Safety":"❤️‍🩹",
+ "Procedures":"⏱️","Process Improvement":"📈","Subwaiting & Registration":"🤝","Technologists":"🩻","Waste Management":"♻️"
+};
+const CHEERS = [
+ "Every card you flip is one less surprise on survey day.",
+ "Small steps, big readiness. You've got this!",
+ "Surveyors love a confident answer. Let's build yours.",
+ "A few minutes a day keeps the citations away. 😉",
+ "You already know more than you think. Let's prove it."
+];
+const GOT_IT = ["Nailed it! 🎯","You're on fire! (Code Red — the good kind) 🔥","Survey-ready! ✅","Look at you go! 🌟","Textbook answer! 📘","Crushed it! 💪"];
+const KEEP = ["No worries — that's what practice is for.","Good call. It'll come back around.","Learning in progress — you'll get it next time! 🌱","Honest review = real progress."];
+const pick = a => a[Math.floor(Math.random()*a.length)];
+QUESTIONS.forEach(q=>{ q.cat=q.topic; q.key="q"+q.id; });
+const ROLE_LIST=[
+ {k:"Technologist",icon:"🩻",sub:"CT, MRI, NM, IR, X-ray, Ultrasound, Mammo"},
+ {k:"Nurse/NP",label:"Nurse / NP",icon:"🩺",sub:"RNs and Nurse Practitioners"},
+ {k:"Imaging Assistant",icon:"🧑‍⚕️",sub:"Also called Tech Assistant"},
+ {k:"Clinical Partner",icon:"🤲",sub:"Patient care support"},
+ {k:"Support Staff",icon:"🤝",sub:"Registration, subwaiting, front desk"},
+ {k:"all",label:"Show me everything",icon:"⭐",sub:"All questions for every role"}];
+let role=null;
+try{ role=localStorage.getItem("tjc-ready-role") }catch(e){}
+if(role && !ROLE_LIST.some(r=>r.k===role)) role=null;
+function setRole(r){ role=r; try{ r?localStorage.setItem("tjc-ready-role",r):localStorage.removeItem("tjc-ready-role") }catch(e){} }
+function roleLabel(){ const r=ROLE_LIST.find(x=>x.k===role); return r?(r.label||r.k):"" }
+function forRole(q){ return role==="all" || q.roles.includes("all") || q.roles.includes(role) }
+function visible(){ return QUESTIONS.filter(forRole) }
+function cats(){ return [...new Set(visible().map(q=>q.cat))] }
+
+function hash(s){let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return (h>>>0).toString(36)}
+// progress: only this viewer's browser
+const STORE="tjc-ready-v2";
+let known = {};
+try{ known = JSON.parse(localStorage.getItem(STORE)||"{}") }catch(e){ known={} }
+function save(){ try{ localStorage.setItem(STORE, JSON.stringify(known)) }catch(e){} }
+
+const app = document.getElementById("app");
+let state = {view:"home", cat:null};
+
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function qsFor(cat){ return cat==="__all" ? visible() : visible().filter(q=>q.cat===cat) }
+function catName(cat){ return cat==="__all" ? "All Topics" : cat }
+function catIcon(cat){ return cat==="__all" ? "⭐" : (ICONS[cat]||"📋") }
+function knownCount(list){ return list.filter(q=>known[q.key]).length }
+function shuffle(a){ for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]} return a }
+function toast(msg){ const t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove("show"),1600) }
+const backBtn = `<button class="back" aria-label="Back" data-act="back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>`;
+
+function rolePicker(){
+  app.innerHTML = `
+   <h1>Survey Ready 🩻</h1>
+   <p class="sub">Joint Commission review for Imaging</p>
+   <div class="cheer">Welcome! Pick your role so you see the questions that matter for your job.</div>
+   <div class="label">I am a…</div>
+   <div class="list">
+    ${ROLE_LIST.map(r=>`<button class="cat${r.k==="all"?" all":""}" data-role="${esc(r.k)}"><div class="ico">${r.icon}</div>
+      <div class="grow"><div class="name">${esc(r.label||r.k)}</div><div class="meta">${esc(r.sub)} · ${QUESTIONS.filter(q=>r.k==="all"||q.roles.includes("all")||q.roles.includes(r.k)).length} questions</div></div></button>`).join("")}
+   </div>
+   <div class="foot">You can change this any time.</div>`;
+}
+function home(){
+  if(!role) return rolePicker();
+  const V=visible(), total=V.length, k=knownCount(V), pct=Math.round(k/total*100);
+  const msg = k===0 ? pick(CHEERS) : pct===100 ? "You've mastered every card. Surveyors, bring it on! 🏆" : `You've got ${k} of ${total} down (${pct}%). ${pick(CHEERS)}`;
+  app.innerHTML = `
+   <h1>Survey Ready 🩻</h1>
+   <p class="sub">Studying as <b>${esc(roleLabel())}</b> · <button class="link" data-act="change-role" style="padding:0">change</button></p>
+   <div class="cheer">${esc(msg)}</div>
+   <button class="cat all" data-cat="__all">
+     <div class="ico">⭐</div>
+     <div class="grow"><div class="name">All Topics</div><div class="meta">${total} questions · ${k} mastered</div>
+     <div class="bar"><i style="width:${pct}%"></i></div></div>
+   </button>
+   <div class="label">Pick a category</div>
+   <div class="list">
+    ${cats().map(c=>{const l=qsFor(c),kk=knownCount(l),p=Math.round(kk/l.length*100);
+      return `<button class="cat" data-cat="${esc(c)}"><div class="ico">${catIcon(c)}</div>
+       <div class="grow"><div class="name">${esc(c)}</div><div class="meta">${l.length} questions${kk?` · ${kk} mastered`:""}${p===100?" · 🏅":""}</div>
+       <div class="bar"><i style="width:${p}%"></i></div></div></button>`}).join("")}
+   </div>
+   <div class="foot">Your progress is saved on this device only.<br><button class="link" data-act="reset">Reset my progress</button></div>`;
+}
+
+function modes(){
+  const l=qsFor(state.cat), k=knownCount(l);
+  app.innerHTML = `
+   <header class="top">${backBtn}</header>
+   <h1>${catIcon(state.cat)} ${esc(catName(state.cat))}</h1>
+   <p class="sub">${l.length} questions · ${k} mastered</p>
+   <div class="modes">
+    <button class="mode" data-mode="cards"><div class="ico">🃏</div><div><b>Flashcards</b><span>Tap to flip. Sort into “Got it” or “Still learning.”</span></div></button>
+    <button class="mode" data-mode="surveyor"><div class="ico">📋</div><div><b>Surveyor Says</b><span>A surveyor stops you in the hall. Answer out loud, then check yourself.</span></div></button>
+   </div>`;
+}
+
+/* ---------- Flashcards ---------- */
+let deck=[], pos=0, round={got:0,learn:[]};
+function startCards(list){
+  deck = shuffle((list||qsFor(state.cat)).slice()); pos=0; round={got:0,learn:[]};
+  state.view="cards"; render();
+}
+function cards(){
+  if(pos>=deck.length) return cardsDone();
+  const q=deck[pos];
+  app.innerHTML = `
+   <header class="top">${backBtn}<h2>${esc(catName(state.cat))}</h2></header>
+   <div class="progress-top"><span>${pos+1} / ${deck.length}</span><div class="bar"><i style="width:${(pos)/deck.length*100}%"></i></div></div>
+   <div class="stage"><div class="flip" id="flip" role="button" tabindex="0" aria-label="Flip card">
+     <div class="face"><div class="tag">${catIcon(q.cat)} ${esc(q.cat)}</div><div class="q">${esc(q.q)}</div><div class="hint">Tap card to see the answer</div></div>
+     <div class="face rear"><div class="tag">Answer</div><div class="a">${esc(q.a)}</div><div class="hint">Tap to flip back</div></div>
+   </div></div>
+   <div class="actions">
+     <button class="btn warm" data-act="learn">🌱 Still learning</button>
+     <button class="btn good" data-act="got">✓ Got it</button>
+   </div>`;
+  const f=document.getElementById("flip");
+  const flip=()=>f.classList.toggle("on");
+  f.onclick=flip; f.onkeydown=e=>{if(e.key===" "||e.key==="Enter"){e.preventDefault();flip()}};
+}
+function cardsDone(){
+  const n=deck.length, g=round.got, pct=Math.round(g/n*100);
+  const [emoji,title,line] = pct===100?["🏆","Perfect round!","Every single one. The surveyors don't stand a chance."]:
+    pct>=75?["🌟","Great work!","You're nearly survey-ready on this one."]:
+    pct>=40?["💪","Solid progress!","Each round makes it stick a little more."]:
+    ["🌱","Good start!","This is how learning works. Run the tricky ones again."];
+  const C=2*Math.PI*62;
+  app.innerHTML = `
+   <header class="top">${backBtn}</header>
+   <div class="done">
+     <svg class="ring" viewBox="0 0 150 150"><circle cx="75" cy="75" r="62" fill="none" stroke="var(--line)" stroke-width="12"/>
+      <circle cx="75" cy="75" r="62" fill="none" stroke="var(--good)" stroke-width="12" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-g/n)}" transform="rotate(-90 75 75)"/>
+      <text x="75" y="84" text-anchor="middle" font-size="30" font-weight="700" fill="var(--ink)">${g}/${n}</text></svg>
+     <div class="big">${emoji}</div><h2>${title}</h2><p>${line}</p>
+     <div class="actions">
+      ${round.learn.length?`<button class="btn primary wide" data-act="again-learn">Practice the ${round.learn.length} I'm still learning</button>`:""}
+      <button class="btn" data-act="again">Shuffle & restart</button>
+      <button class="btn" data-act="home">Pick a category</button>
+     </div>
+   </div>`;
+}
+
+/* ---------- Surveyor Says ---------- */
+let sv={q:null,revealed:false,asked:0,nailed:0,streak:0,last:null};
+const OPENERS=["Excuse me, quick question —","Hi there! Can you tell me…","While I have you —","I'm curious…","Walk me through this:"];
+function startSurveyor(){ sv={q:null,revealed:false,asked:0,nailed:0,streak:0,last:null}; nextSv(); state.view="surveyor"; render(); }
+function nextSv(){
+  const l=qsFor(state.cat);
+  // favor ones not yet mastered
+  const pool=l.filter(q=>!known[q.key]&&q!==sv.last); const src=pool.length?pool:l.filter(q=>q!==sv.last);
+  sv.q = (src.length?src:l)[Math.floor(Math.random()*(src.length?src:l).length)];
+  sv.opener=pick(OPENERS); sv.revealed=false;
+}
+function surveyor(){
+  const q=sv.q;
+  app.innerHTML = `
+   <header class="top">${backBtn}<h2>Surveyor Says</h2></header>
+   <div class="stats">
+     <div class="stat"><b>${sv.asked}</b><span>Asked</span></div>
+     <div class="stat"><b>${sv.nailed}</b><span>Nailed it</span></div>
+     <div class="stat"><b>${sv.streak}${sv.streak>=3?" 🔥":""}</b><span>Streak</span></div>
+   </div>
+   <div class="surveyor"><div class="avatar">🕵️</div>
+     <div class="bubble"><small>${esc(sv.opener)}</small>${esc(q.sv||q.q)}</div></div>
+   ${sv.revealed ? `<div class="answer"><b>A strong answer</b>${esc(q.a)}</div>
+      <div class="actions">
+       <button class="btn warm" data-act="sv-miss">🌱 Need practice</button>
+       <button class="btn good" data-act="sv-hit">🎯 Nailed it</button>
+      </div>` :
+     `<div class="think">🗣️ <span>Say your answer out loud like you're talking to the surveyor. Then check yourself.</span></div>
+      <div class="actions"><button class="btn primary wide" data-act="reveal">Reveal answer</button></div>`}
+   <div class="foot">${esc(catIcon(q.cat))} ${esc(q.cat)}</div>`;
+}
+
+/* ---------- router ---------- */
+function render(){
+  if(state.view==="home") home();
+  else if(state.view==="modes") modes();
+  else if(state.view==="cards") cards();
+  else if(state.view==="surveyor") surveyor();
+  window.scrollTo(0,0);
+}
+let resetArmed=false;
+app.addEventListener("click", e=>{
+  const b=e.target.closest("[data-cat],[data-mode],[data-act],[data-role]"); if(!b) return;
+  if(b.dataset.role){ setRole(b.dataset.role); state={view:"home",cat:null}; toast(pick(["Let's do this! 💪","Great choice! Let's get you survey-ready.","Welcome aboard! 🩻"])); return render(); }
+  if(b.dataset.cat){ state={view:"modes",cat:b.dataset.cat}; return render(); }
+  if(b.dataset.mode==="cards") return startCards();
+  if(b.dataset.mode==="surveyor") return startSurveyor();
+  const a=b.dataset.act;
+  if(a==="back"){ state.view = state.view==="modes" ? "home" : "modes"; return render(); }
+  if(a==="home"){ state.view="home"; return render(); }
+  if(a==="change-role"){ setRole(null); state={view:"home",cat:null}; return render(); }
+  if(a==="got"){ const q=deck[pos]; known[q.key]=1; save(); round.got++; pos++; toast(pick(GOT_IT)); return cards(); }
+  if(a==="learn"){ const q=deck[pos]; delete known[q.key]; save(); round.learn.push(q); pos++; toast(pick(KEEP)); return cards(); }
+  if(a==="again") return startCards();
+  if(a==="again-learn") return startCards(round.learn);
+  if(a==="reveal"){ sv.revealed=true; return surveyor(); }
+  if(a==="sv-hit"){ known[sv.q.key]=1; save(); sv.asked++; sv.nailed++; sv.streak++; toast(sv.streak>=5?`${sv.streak} in a row! Surveyor is impressed 👏`:pick(GOT_IT)); sv.last=sv.q; nextSv(); return surveyor(); }
+  if(a==="sv-miss"){ delete known[sv.q.key]; save(); sv.asked++; sv.streak=0; toast(pick(KEEP)); sv.last=sv.q; nextSv(); return surveyor(); }
+  if(a==="reset"){
+    if(!resetArmed){ resetArmed=true; b.textContent="Tap again to confirm reset"; setTimeout(()=>{resetArmed=false; if(b.isConnected) b.textContent="Reset my progress"},3000); return; }
+    known={}; save(); resetArmed=false; toast("Fresh start! 🌱"); return render();
+  }
+});
+render();
+</script>
+</body>
+</html>
